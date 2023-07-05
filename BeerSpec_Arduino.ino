@@ -48,13 +48,13 @@ Serial.begin(9600);
 inputString.reserve(200);
 
 //Cycle LED to signify setup OK
-RGB_color(128,0,0);
+set_LED(128,0,0);
 delay(1000);
-RGB_color(0,128,0);
+set_LED(0,128,0);
 delay(1000);
-RGB_color(0,0,128);
+set_LED(0,0,128);
 delay(1000);
-RGB_color(0,0,0);
+set_LED(0,0,0);
 
 
 }
@@ -87,7 +87,7 @@ void serialEvent() {
       int red = Serial.parseInt();
       int green = Serial.parseInt();
       int blue = Serial.parseInt();
-      RGB_color(red,green,blue);
+      set_LED(red,green,blue);
     }
 
     if (inputString == "#READEXT") {
@@ -104,7 +104,7 @@ void serialEvent() {
 
 
 
-void RGB_color(int red_light_value, int green_light_value, int blue_light_value)
+void set_LED(int red_light_value, int green_light_value, int blue_light_value)
  {
   analogWrite(red_light_pin, red_light_value);
   analogWrite(green_light_pin, green_light_value);
@@ -132,7 +132,7 @@ void read_ext(){
 }
 
 void set_and_read(int red_light_value, int green_light_value, int blue_light_value){
-  RGB_color(red_light_value,green_light_value,blue_light_value);
+  set_LED(red_light_value,green_light_value,blue_light_value);
   delay(4000);
   read_ext();
   delay(1000);
