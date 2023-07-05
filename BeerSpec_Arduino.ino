@@ -1,6 +1,7 @@
 #include <Wire.h>
 #include "Adafruit_TCS34725.h"
 
+
 /*********
   BeerSpec Arduino
   https://github.com/DrJonnyT/BeerSpec_Arduino
@@ -23,6 +24,20 @@ Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_614MS, TCS347
 //Serial input
 String inputString = "";         // a String to hold incoming serial data
 bool stringComplete = false;  // whether the string is complete
+
+
+//Initial settings
+int LEDR = 0;
+int LEDG = 0;
+int LEDB = 0;
+int gainExtR = 1;
+int gainExtG = 1;
+int gainExtB = 1;
+int gainScaR = 1;
+int gainScaG = 1;
+int gainScaB = 1;
+int numSamples = 1;
+
 
 void setup() {
   
