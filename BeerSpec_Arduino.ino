@@ -54,13 +54,19 @@ Serial.begin(9600);
 inputString.reserve(200);
 
 //Cycle LED to signify setup OK
-set_LED(128,0,0);
+LEDR = 128;
+set_LED();
 delay(1000);
-set_LED(0,128,0);
+LEDR = 0;
+LEDG = 128;
+set_LED();
 delay(1000);
-set_LED(0,0,128);
+LEDG = 0;
+LEDB = 128;
+set_LED();
 delay(1000);
-set_LED(0,0,0);
+LEDB=0;
+set_LED();
 
 
 }
@@ -88,13 +94,17 @@ void serialEvent() {
     // add it to the inputString:
     inputString += inChar;
 
-    //Set the LED
-    if (inputString == "#SETLED") {
+    //Set the LED colours
+    if (inputString == "#SETLEDRGB") {
       // look for the next valid integer in the incoming serial stream:
-      int red = Serial.parseInt();
-      int green = Serial.parseInt();
-      int blue = Serial.parseInt();
-      set_LED(red,green,blue);
+      LEDR = Serial.parseInt();
+      LEDG = Serial.parseInt();
+      LEDB = Serial.parseInt();
+    }
+
+    //Set the LED to the selected colours as a one-off
+    if (inputString == "#SETLED") {
+      set_LED();
     }
 
     //Set the gains
@@ -121,14 +131,16 @@ void serialEvent() {
 }
 
 
-
-void set_LED(int red_light_value, int green_light_value, int blue_light_value)
+//Turn the LED on to the relevant settings
+void set_LED()
  {
-  analogWrite(red_light_pin, red_light_value);
-  analogWrite(green_light_pin, green_light_value);
-  analogWrite(blue_light_pin, blue_light_value);
-  Serial.print("RGB = (" + String(red_light_value) + "," + String(green_light_value) + "," + String(blue_light_value) + ")\n");
+  analogWrite(red_light_pin, LEDR);
+  analogWrite(green_light_pin, LEDG);
+  analogWrite(blue_light_pin, LEDB);
+  Serial.print("LEDRGB = (" + String(LEDR) + "," + String(LEDG) + "," + String(LEDB) + ")\n");
 }
+
+
 
 
 void read_ext(){
@@ -149,9 +161,9 @@ void read_ext(){
   Serial.println();
 }
 
-void set_and_read(int red_light_value, int green_light_value, int blue_light_value){
-  set_LED(red_light_value,green_light_value,blue_light_value);
-  delay(4000);
-  read_ext();
-  delay(1000);
-}
+// void set_and_read(int red_light_value, int green_light_value, int blue_light_value){
+//   set_LED(red_light_value,green_light_value,blue_light_value);
+//   delay(4000);
+//   read_ext();
+//   delay(1000);
+// }
