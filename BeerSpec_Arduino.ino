@@ -96,7 +96,17 @@ void serialEvent() {
       int blue = Serial.parseInt();
       set_LED(red,green,blue);
     }
-     
+
+    //Set the gains
+    if (inputString == "#SETGAINS") {
+      // look for the next valid integer in the incoming serial stream:
+      gainExtR = Serial.parseInt();
+      gainExtG = Serial.parseInt();
+      gainExtB = Serial.parseInt();
+      gainScaR = Serial.parseInt();
+      gainScaG = Serial.parseInt();
+      gainScaB = Serial.parseInt();      
+    }
 
     if (inputString == "#READEXT") {
         read_ext();
