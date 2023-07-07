@@ -95,7 +95,7 @@ void serialEvent() {
     inputString += inChar;
 
     //Set the LED colours
-    if (inputString == "#SETLEDRGB") {
+    if (inputString == "#SETTINGSLEDRGB") {
       // look for the next valid integer in the incoming serial stream:
       LEDR = Serial.parseInt();
       LEDG = Serial.parseInt();
@@ -108,7 +108,7 @@ void serialEvent() {
     }
 
     //Set the gains
-    if (inputString == "#SETGAINS") {
+    if (inputString == "#SETTINGSGAINS") {
       // look for the next valid integer in the incoming serial stream:
       gainExtR = Serial.parseInt();
       gainExtG = Serial.parseInt();
