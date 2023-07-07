@@ -36,6 +36,12 @@ int gainExtB = 1;
 int gainScaR = 1;
 int gainScaG = 1;
 int gainScaB = 1;
+float intTimeExtR = 24.;
+float intTimeExtG = 24.;
+float intTimeExtB = 24.;
+float intTimeScaR = 24.;
+float intTimeScaG = 24.;
+float intTimeScaB = 24.;
 int numSamples = 1;
 
 
@@ -82,6 +88,7 @@ void serialEvent() {
     // add it to the inputString:
     inputString += inChar;
 
+    //Set the LED
     if (inputString == "#SETLED") {
       // look for the next valid integer in the incoming serial stream:
       int red = Serial.parseInt();
@@ -89,6 +96,7 @@ void serialEvent() {
       int blue = Serial.parseInt();
       set_LED(red,green,blue);
     }
+     
 
     if (inputString == "#READEXT") {
         read_ext();
