@@ -19,7 +19,7 @@ int blue_light_pin = 9;
 // Adafruit_TCS34725 tcs = Adafruit_TCS34725();
 
 /* Initialise with specific int time and gain values */
-Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_614MS, TCS34725_GAIN_1X);
+Adafruit_TCS34725 tcs_Ext = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_24MS, TCS34725_GAIN_1X);
 
 //Serial input
 String inputString = "";         // a String to hold incoming serial data
@@ -117,9 +117,10 @@ void serialEvent() {
       gainScaG = Serial.parseInt();
       gainScaB = Serial.parseInt();      
     }
-
-    if (inputString == "#READEXT") {
-        read_ext();
+    
+    //Read Ext sensor in sequence, with relevant settings
+    if (inputString == "#READEXTSEQ") {
+        //readExtSeq();
       }
 
     // if the incoming character is a newline, set a flag so the main loop can
@@ -140,26 +141,107 @@ void set_LED()
   Serial.print("LEDRGB = (" + String(LEDR) + "," + String(LEDG) + "," + String(LEDB) + ")\n");
 }
 
+//Turn the Ext gain on to the relevant settings
+void set_GainExt(Adafruit_TCS34725 tcs, int gain)
+ {
+     switch (gain) {
+  case 1:
+    tcs.setGain(TCS34725_GAIN_1X);
+    Serial.print("Set Ext gain to 1");
+    Serial.println();
+    break;
+  case 4:
+    tcs.setGain(TCS34725_GAIN_4X);
+    Serial.print("Set Ext gain to 4");
+    Serial.println();
+    break;
+  case 16:
+    tcs.setGain(TCS34725_GAIN_16X);
+    Serial.print("Set Ext gain to 16");
+    Serial.println();
+    break;
+  case 60:
+    tcs.setGain(TCS34725_GAIN_60X);
+    Serial.print("Set Ext gain to 60");
+    Serial.println();
+    break;
+  default:
+    // Code to execute when expression doesn't match any case
+    tcs.setGain(TCS34725_GAIN_1X);
+    Serial.print("Set Ext gain to 1 (default)");
+    Serial.println();
+    break; 
+   }
+ }
+
+//Turn the Ext integration time to the relevant settings
+void set_IntegTimeExt(Adafruit_TCS34725 tcs,int integTime)
+ {
+   switch (integTime) {
+  case 24:
+    tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_24MS);
+    Serial.print("Set Integration time to 24ms");
+    Serial.println();
+    break;
+  case 60:
+    tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_60MS);
+    Serial.print("Set Integration time to 60ms");
+    Serial.println();
+    break;
+  case 120:
+    tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_120MS);
+    Serial.print("Set Integration time to 120ms");
+    Serial.println();
+    break;
+  case 240:
+    tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_240MS);
+    Serial.print("Set Integration time to 240ms");
+    Serial.println();
+    break;
+  case 480:
+    tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_480MS);
+    Serial.print("Set Integration time to 480ms");
+    Serial.println();
+    break;
+  // Add more case statements as needed
+  default:
+    // Code to execute when expression doesn't match any case
+    tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_24MS);
+    Serial.print("Set Integration time to 24ms (default)");
+    Serial.println();
+    break;
+    }
+ }
+
+   
+   
 
 
 
-void read_ext(){
-  uint16_t r, g, b, c;
-  tcs.getRawData(&r, &g, &b, &c);
 
-  Serial.print("R = ");
-  Serial.print(r);
-  Serial.println();
-  Serial.print("G = ");
-  Serial.print(g);
-  Serial.println();
-  Serial.print("B = ");
-  Serial.print(b);
-  Serial.println();
-  Serial.print("C = ");
-  Serial.print(c);
-  Serial.println();
-}
+
+// //Read extinction sensor, just one colour
+// void read_ext_onecolour(char colour){
+//   //First set the sensor to the relevant settings
+//   setIntegrationTime(uint8_t it);
+  
+
+//   uint16_t r, g, b, c;
+//   tcs.getRawData(&r, &g, &b, &c);
+
+//   Serial.print("R = ");
+//   Serial.print(r);
+//   Serial.println();
+//   Serial.print("G = ");
+//   Serial.print(g);
+//   Serial.println();
+//   Serial.print("B = ");
+//   Serial.print(b);
+//   Serial.println();
+//   Serial.print("C = ");
+//   Serial.print(c);
+//   Serial.println();
+// }
 
 // void set_and_read(int red_light_value, int green_light_value, int blue_light_value){
 //   set_LED(red_light_value,green_light_value,blue_light_value);
