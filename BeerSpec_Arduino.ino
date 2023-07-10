@@ -99,7 +99,7 @@ void serialEvent() {
       LEDR = Serial.parseInt();
       LEDG = Serial.parseInt();
       LEDB = Serial.parseInt();
-      Serial.print("@LEDRGB = (" + String(LEDR) + "," + String(LEDG) + "," + String(LEDB) + ")");
+      Serial.print("@LEDRGB = " + String(LEDR) + " " + String(LEDG) + " " + String(LEDB));
       Serial.println();
     }
 
@@ -117,7 +117,7 @@ void serialEvent() {
       gainScaR = Serial.parseInt();
       gainScaG = Serial.parseInt();
       gainScaB = Serial.parseInt();
-      Serial.print("@GAINS = " + String(gainExtR) + String(gainExtG) + String(gainExtB) + String(gainScaR) + String(gainScaG) + String(gainScaB) );
+      Serial.print("@GAINS = " + String(gainExtR) + " " + String(gainExtG) + " " + String(gainExtB) + " " + String(gainScaR) + " " + String(gainScaG) + " " + String(gainScaB) );
       Serial.println();      
     }
     
