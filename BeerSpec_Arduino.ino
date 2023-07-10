@@ -36,12 +36,12 @@ int gainExtB = 1;
 int gainScaR = 1;
 int gainScaG = 1;
 int gainScaB = 1;
-float intTimeExtR = 24.;
-float intTimeExtG = 24.;
-float intTimeExtB = 24.;
-float intTimeScaR = 24.;
-float intTimeScaG = 24.;
-float intTimeScaB = 24.;
+int intTimeExtR = 24.;
+int intTimeExtG = 24.;
+int intTimeExtB = 24.;
+int intTimeScaR = 24.;
+int intTimeScaG = 24.;
+int intTimeScaB = 24.;
 
 
 void setup() {
@@ -130,7 +130,7 @@ void serialEvent() {
       intTimeScaR = Serial.parseInt();
       intTimeScaG = Serial.parseInt();
       intTimeScaB = Serial.parseInt();
-      Serial.print("@GAINS = " + String(intTimeExtR) + " " + String(intTimeExtG) + " " + String(intTimeExtB) + " " + String(intTimeScaR) + " " + String(intTimeScaG) + " " + String(intTimeScaB) );
+      Serial.print("@INTTIMES = " + String(intTimeExtR) + " " + String(intTimeExtG) + " " + String(intTimeExtB) + " " + String(intTimeScaR) + " " + String(intTimeScaG) + " " + String(intTimeScaB) );
       Serial.println();      
     }
     
