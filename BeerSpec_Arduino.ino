@@ -42,7 +42,6 @@ float intTimeExtB = 24.;
 float intTimeScaR = 24.;
 float intTimeScaG = 24.;
 float intTimeScaB = 24.;
-int numSamples = 1;
 
 
 void setup() {
