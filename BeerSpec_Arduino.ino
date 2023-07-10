@@ -99,7 +99,7 @@ void serialEvent() {
       LEDR = Serial.parseInt();
       LEDG = Serial.parseInt();
       LEDB = Serial.parseInt();
-      Serial.print("#LEDRGB = (" + String(LEDR) + "," + String(LEDG) + "," + String(LEDB) + ")");
+      Serial.print("@LEDRGB = (" + String(LEDR) + "," + String(LEDG) + "," + String(LEDB) + ")");
       Serial.println();
     }
 
@@ -139,7 +139,7 @@ void set_LED()
   analogWrite(red_light_pin, LEDR);
   analogWrite(green_light_pin, LEDG);
   analogWrite(blue_light_pin, LEDB);
-  Serial.print("#LEDSET");
+  Serial.print("@LEDSET");
   Serial.println();
 }
 
@@ -149,28 +149,28 @@ void set_GainExt(Adafruit_TCS34725 tcs, int gain)
      switch (gain) {
   case 1:
     tcs.setGain(TCS34725_GAIN_1X);
-    Serial.print("Set Ext gain to 1");
+    Serial.print("@Set Ext gain to 1");
     Serial.println();
     break;
   case 4:
     tcs.setGain(TCS34725_GAIN_4X);
-    Serial.print("Set Ext gain to 4");
+    Serial.print(":Set Ext gain to 4");
     Serial.println();
     break;
   case 16:
     tcs.setGain(TCS34725_GAIN_16X);
-    Serial.print("Set Ext gain to 16");
+    Serial.print("@Set Ext gain to 16");
     Serial.println();
     break;
   case 60:
     tcs.setGain(TCS34725_GAIN_60X);
-    Serial.print("Set Ext gain to 60");
+    Serial.print("@Set Ext gain to 60");
     Serial.println();
     break;
   default:
     // Code to execute when expression doesn't match any case
     tcs.setGain(TCS34725_GAIN_1X);
-    Serial.print("Set Ext gain to 1 (default)");
+    Serial.print("@Set Ext gain to 1 (default)");
     Serial.println();
     break; 
    }
@@ -182,34 +182,34 @@ void set_IntegTimeExt(Adafruit_TCS34725 tcs,int integTime)
    switch (integTime) {
   case 24:
     tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_24MS);
-    Serial.print("Set Integration time to 24ms");
+    Serial.print("@Set Integration time to 24ms");
     Serial.println();
     break;
   case 60:
     tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_60MS);
-    Serial.print("Set Integration time to 60ms");
+    Serial.print("@Set Integration time to 60ms");
     Serial.println();
     break;
   case 120:
     tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_120MS);
-    Serial.print("Set Integration time to 120ms");
+    Serial.print("@Set Integration time to 120ms");
     Serial.println();
     break;
   case 240:
     tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_240MS);
-    Serial.print("Set Integration time to 240ms");
+    Serial.print("@Set Integration time to 240ms");
     Serial.println();
     break;
   case 480:
     tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_480MS);
-    Serial.print("Set Integration time to 480ms");
+    Serial.print("@Set Integration time to 480ms");
     Serial.println();
     break;
   // Add more case statements as needed
   default:
     // Code to execute when expression doesn't match any case
     tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_24MS);
-    Serial.print("Set Integration time to 24ms (default)");
+    Serial.print("@Set Integration time to 24ms (default)");
     Serial.println();
     break;
     }
