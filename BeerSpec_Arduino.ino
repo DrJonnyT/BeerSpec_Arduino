@@ -93,7 +93,7 @@ void serialEvent() {
     // add it to the inputString:
     inputString += inChar;
 
-    //Set the LED colours
+    //Set the LED colours settings
     if (inputString == "#SETTINGSLEDRGB") {
       // look for the next valid integer in the incoming serial stream:
       LEDR = Serial.parseInt();
@@ -108,7 +108,7 @@ void serialEvent() {
       set_LED();
     }
 
-    //Set the gains
+    //Set the gain settings
     if (inputString == "#SETTINGSGAINS") {
       // look for the next valid integer in the incoming serial stream:
       gainExtR = Serial.parseInt();
@@ -118,6 +118,19 @@ void serialEvent() {
       gainScaG = Serial.parseInt();
       gainScaB = Serial.parseInt();
       Serial.print("@GAINS = " + String(gainExtR) + " " + String(gainExtG) + " " + String(gainExtB) + " " + String(gainScaR) + " " + String(gainScaG) + " " + String(gainScaB) );
+      Serial.println();      
+    }
+
+    //Set the integration time settings
+    if (inputString == "#SETTINGSINTTIMES") {
+      // look for the next valid integer in the incoming serial stream:
+      intTimeExtR = Serial.parseInt();
+      intTimeExtG = Serial.parseInt();
+      intTimeExtB = Serial.parseInt();
+      intTimeScaR = Serial.parseInt();
+      intTimeScaG = Serial.parseInt();
+      intTimeScaB = Serial.parseInt();
+      Serial.print("@GAINS = " + String(intTimeExtR) + " " + String(intTimeExtG) + " " + String(intTimeExtB) + " " + String(intTimeScaR) + " " + String(intTimeScaG) + " " + String(intTimeScaB) );
       Serial.println();      
     }
     
