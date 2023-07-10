@@ -99,6 +99,8 @@ void serialEvent() {
       LEDR = Serial.parseInt();
       LEDG = Serial.parseInt();
       LEDB = Serial.parseInt();
+      Serial.print("#LEDRGB = (" + String(LEDR) + "," + String(LEDG) + "," + String(LEDB) + ")");
+      Serial.println();
     }
 
     //Set the LED to the selected colours as a one-off
@@ -137,7 +139,8 @@ void set_LED()
   analogWrite(red_light_pin, LEDR);
   analogWrite(green_light_pin, LEDG);
   analogWrite(blue_light_pin, LEDB);
-  Serial.print("LEDRGB = (" + String(LEDR) + "," + String(LEDG) + "," + String(LEDB) + ")\n");
+  Serial.print("#LEDSET");
+  Serial.println();
 }
 
 //Turn the Ext gain on to the relevant settings
