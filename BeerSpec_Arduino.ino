@@ -116,7 +116,9 @@ void serialEvent() {
       gainExtB = Serial.parseInt();
       gainScaR = Serial.parseInt();
       gainScaG = Serial.parseInt();
-      gainScaB = Serial.parseInt();      
+      gainScaB = Serial.parseInt();
+      Serial.print("@GAINS = " + String(gainExtR) + String(gainExtG) + String(gainExtB) + String(gainScaR) + String(gainScaG) + String(gainScaB) );
+      Serial.println();      
     }
     
     //Read Ext sensor in sequence, with relevant settings
