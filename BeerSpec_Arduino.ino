@@ -35,8 +35,8 @@ int LEDB = 0;
 int gainExt = 1;
 int gainSca = 1;
 //Detector integration times (ms)
-int intTimeExt = 24;
-int intTimeSca = 24;
+int inttimeExt = 24;
+int inttimeSca = 24;
 
 
 void setup() {
@@ -49,18 +49,17 @@ inputString.reserve(200);
 
 //Cycle LED to signify setup OK
 LEDR = 128;
-set_LED();
+LED_On();
 delay(1000);
 LEDR = 0;
 LEDG = 128;
-set_LED();
+LED_On();
 delay(1000);
 LEDG = 0;
 LEDB = 128;
-set_LED();
+LED_On();
 delay(1000);
-LEDB=0;
-set_LED();
+LED_Off();
 
 
 }
@@ -99,25 +98,25 @@ void serialEvent() {
     }
 
     //Set the LED to the selected colours as a one-off
-    if (inputString == "#SETLED") {
-      set_LED();
+    if (inputString == "#LEDON") {
+      LED_On();
     }
 
     //Set the LED colours, gains and int times
     if (inputString == "#SETALL") {
       // look for the next valid integer in the incoming serial stream:
-      LEDR = Serial.parseInt();
-      LEDG = Serial.parseInt();
-      LEDB = Serial.parseInt();
-      gainExt = Serial.parseInt();
-      gainSca = Serial.parseInt();
-      intTimeExt = Serial.parseInt();
-      intTimeSca = Serial.parseInt();
+      int red = Serial.parseInt();
+      int green = Serial.parseInt();
+      int blue = Serial.parseInt();
+      int gExt = Serial.parseInt();
+      int gSca = Serial.parseInt();
+      int itExt = Serial.parseInt();
+      int itSca = Serial.parseInt();
 
-      String serialOut = "@ALLSET = " + String(LEDR) + " " + String(LEDG) + " " + String(LEDB);
-      serialOut = serialOut + " " + String(gainExt) + " " + String(gainSca) + " " + String(intTimeExt) + " " + String(intTimeSca);
-      Serial.print(serialOut);
-      Serial.println();
+      settings_LED(red, green, blue);
+      settings_Gains(gExt, gSca);
+      settings_IntTimes(itExt, itSca);
+
     }
 
 
@@ -139,12 +138,50 @@ void serialEvent() {
 
 
 //Turn the LED on to the relevant settings
-void set_LED()
+void LED_On()
  {
   analogWrite(red_light_pin, LEDR);
   analogWrite(green_light_pin, LEDG);
   analogWrite(blue_light_pin, LEDB);
-  Serial.print("@LEDSET");
+  Serial.print("@LEDON");
+  Serial.println();
+}
+
+//Turn the LED off
+void LED_Off()
+ {
+  analogWrite(red_light_pin, 0);
+  analogWrite(green_light_pin, 0);
+  analogWrite(blue_light_pin, 0);
+  Serial.print("@LEDOFF");
+  Serial.println();
+}
+
+//Set the LED settings
+void settings_LED(int red, int green, int blue)
+ {
+  LEDR = red;
+  LEDG = green;
+  LEDB = blue;
+  Serial.print("@LEDSETTINGS = " + String(LEDR) + " " + String(LEDG) + " " + String(LEDB));
+  Serial.println();
+}
+
+//Set the Gain settings
+void settings_Gains(int ext, int sca)
+ {
+  gainExt = ext;
+  gainSca = sca;
+  Serial.print("@GAINSETTINGS = " + String(gainExt) + " " + String(gainSca));
+  Serial.println();
+}
+
+//Set the Int Time settings
+void settings_IntTimes(int ext, int sca)
+ {
+  inttimeExt = ext;
+  inttimeSca = sca;
+  Serial.print("@INTTIMESETTINGS = " + String(inttimeExt) + " " + String(inttimeSca));
   Serial.println();
 }
 
@@ -251,7 +288,7 @@ void set_IntegTimeExt(Adafruit_TCS34725 tcs,int integTime)
 // }
 
 // void set_and_read(int red_light_value, int green_light_value, int blue_light_value){
-//   set_LED(red_light_value,green_light_value,blue_light_value);
+//   LED_On(red_light_value,green_light_value,blue_light_value);
 //   delay(4000);
 //   read_ext();
 //   delay(1000);
