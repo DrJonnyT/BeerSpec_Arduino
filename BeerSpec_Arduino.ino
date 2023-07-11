@@ -27,21 +27,16 @@ bool stringComplete = false;  // whether the string is complete
 
 
 //Initial settings
+//LED colour
 int LEDR = 0;
 int LEDG = 0;
 int LEDB = 0;
-int gainExtR = 1;
-int gainExtG = 1;
-int gainExtB = 1;
-int gainScaR = 1;
-int gainScaG = 1;
-int gainScaB = 1;
-int intTimeExtR = 24.;
-int intTimeExtG = 24.;
-int intTimeExtB = 24.;
-int intTimeScaR = 24.;
-int intTimeScaG = 24.;
-int intTimeScaB = 24.;
+//Detector gains
+int gainExt = 1;
+int gainSca = 1;
+//Detector integration times (ms)
+int intTimeExt = 24;
+int intTimeSca = 24;
 
 
 void setup() {
@@ -108,36 +103,16 @@ void serialEvent() {
       set_LED();
     }
 
-    //Set the gain settings
-    if (inputString == "#SETTINGSGAINS") {
-      // look for the next valid integer in the incoming serial stream:
-      gainExtR = Serial.parseInt();
-      gainExtG = Serial.parseInt();
-      gainExtB = Serial.parseInt();
-      gainScaR = Serial.parseInt();
-      gainScaG = Serial.parseInt();
-      gainScaB = Serial.parseInt();
-      Serial.print("@GAINS = " + String(gainExtR) + " " + String(gainExtG) + " " + String(gainExtB) + " " + String(gainScaR) + " " + String(gainScaG) + " " + String(gainScaB) );
-      Serial.println();      
-    }
 
-    //Set the integration time settings
-    if (inputString == "#SETTINGSINTTIMES") {
-      // look for the next valid integer in the incoming serial stream:
-      intTimeExtR = Serial.parseInt();
-      intTimeExtG = Serial.parseInt();
-      intTimeExtB = Serial.parseInt();
-      intTimeScaR = Serial.parseInt();
-      intTimeScaG = Serial.parseInt();
-      intTimeScaB = Serial.parseInt();
-      Serial.print("@INTTIMES = " + String(intTimeExtR) + " " + String(intTimeExtG) + " " + String(intTimeExtB) + " " + String(intTimeScaR) + " " + String(intTimeScaG) + " " + String(intTimeScaB) );
-      Serial.println();      
-    }
+
+
     
-    //Read Ext sensor in sequence, with relevant settings
-    if (inputString == "#READEXTSEQ") {
-        //readExtSeq();
+    //Set the gain and int time and make a measurement
+    if (inputString == "#SETMEAS") {
+        
       }
+
+    
 
     // if the incoming character is a newline, set a flag so the main loop can
     // do something about it:
