@@ -103,7 +103,22 @@ void serialEvent() {
       set_LED();
     }
 
+    //Set the LED colours, gains and int times
+    if (inputString == "#SETALL") {
+      // look for the next valid integer in the incoming serial stream:
+      LEDR = Serial.parseInt();
+      LEDG = Serial.parseInt();
+      LEDB = Serial.parseInt();
+      gainExt = Serial.parseInt();
+      gainSca = Serial.parseInt();
+      intTimeExt = Serial.parseInt();
+      intTimeSca = Serial.parseInt();
 
+      String serialOut = "@ALLSET = " + String(LEDR) + " " + String(LEDG) + " " + String(LEDB);
+      serialOut = serialOut + " " + String(gainExt) + " " + String(gainSca) + " " + String(intTimeExt) + " " + String(intTimeSca);
+      Serial.print(serialOut);
+      Serial.println();
+    }
 
 
     
