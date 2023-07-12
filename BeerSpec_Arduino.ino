@@ -34,9 +34,15 @@ int LEDB = 0;
 //Detector gains
 int gainExt = 1;
 int gainSca = 1;
+//Text representation of the detector gains, to be used in tcs.setGain function
+char str_GainExt[18];
+char str_GainSca[18];
 //Detector integration times (ms)
-int inttimeExt = 24;
-int inttimeSca = 24;
+int intTimeExt = 24;
+int intTimeSca = 24;
+//Text representation of the integration times, to be used in tcs.setIntegrationTime function
+char str_intTimeExt[31];
+char str_intTimeSca[31];
 
 
 void setup() {
@@ -48,19 +54,17 @@ Serial.begin(9600);
 inputString.reserve(200);
 
 //Cycle LED to signify setup OK
-LEDR = 128;
+settings_LED(128,0,0);
 LED_On();
 delay(1000);
-LEDR = 0;
-LEDG = 128;
+settings_LED(0,128,0);
 LED_On();
 delay(1000);
-LEDG = 0;
-LEDB = 128;
+settings_LED(0,0,128);
 LED_On();
 delay(1000);
 LED_Off();
-
+Serial.println("@SETUPCOMPLETE");
 
 }
 void loop() {
@@ -143,8 +147,7 @@ void LED_On()
   analogWrite(red_light_pin, LEDR);
   analogWrite(green_light_pin, LEDG);
   analogWrite(blue_light_pin, LEDB);
-  Serial.print("@LEDON");
-  Serial.println();
+  Serial.println("@LEDON");
 }
 
 //Turn the LED off
@@ -153,8 +156,7 @@ void LED_Off()
   analogWrite(red_light_pin, 0);
   analogWrite(green_light_pin, 0);
   analogWrite(blue_light_pin, 0);
-  Serial.print("@LEDOFF");
-  Serial.println();
+  Serial.println("@LEDOFF");
 }
 
 //Set the LED settings
@@ -163,8 +165,7 @@ void settings_LED(int red, int green, int blue)
   LEDR = red;
   LEDG = green;
   LEDB = blue;
-  Serial.print("@LEDSETTINGS = " + String(LEDR) + " " + String(LEDG) + " " + String(LEDB));
-  Serial.println();
+  Serial.println("@LEDSETTINGS = " + String(LEDR) + " " + String(LEDG) + " " + String(LEDB));
 }
 
 //Set the Gain settings
@@ -172,90 +173,79 @@ void settings_Gains(int ext, int sca)
  {
   gainExt = ext;
   gainSca = sca;
-  Serial.print("@GAINSETTINGS = " + String(gainExt) + " " + String(gainSca));
-  Serial.println();
+  //Get the relevant string for the gain setting
+  setGainString(gainExt,str_GainExt);
+  setGainString(gainSca,str_GainSca);
+  char serialOut[50];
+  sprintf(serialOut, "%s%d%s%s%s%d%s%s", "@GAINSETTINGS = ", gainExt," ",str_GainExt," ",gainSca," ",str_GainSca);
+  Serial.println(serialOut);
 }
 
 //Set the Int Time settings
 void settings_IntTimes(int ext, int sca)
  {
-  inttimeExt = ext;
-  inttimeSca = sca;
-  Serial.print("@INTTIMESETTINGS = " + String(inttimeExt) + " " + String(inttimeSca));
-  Serial.println();
+  intTimeExt = ext;
+  intTimeSca = sca;
+  //Get the relevant string for the int time settings
+  setIntTimeString(intTimeExt,str_intTimeExt);
+  setIntTimeString(intTimeSca,str_intTimeSca);
+  char serialOut[50];
+  sprintf(serialOut, "%s%d%s%s%s%d%s%s", "@INTTIMESETTINGS = ", intTimeExt," ",str_intTimeExt," ",intTimeSca," ",str_intTimeSca);
+  Serial.println(serialOut);
 }
 
-//Turn the Ext gain on to the relevant settings
-void set_GainExt(Adafruit_TCS34725 tcs, int gain)
- {
-     switch (gain) {
-  case 1:
-    tcs.setGain(TCS34725_GAIN_1X);
-    Serial.print("@Set Ext gain to 1");
-    Serial.println();
-    break;
-  case 4:
-    tcs.setGain(TCS34725_GAIN_4X);
-    Serial.print(":Set Ext gain to 4");
-    Serial.println();
-    break;
-  case 16:
-    tcs.setGain(TCS34725_GAIN_16X);
-    Serial.print("@Set Ext gain to 16");
-    Serial.println();
-    break;
-  case 60:
-    tcs.setGain(TCS34725_GAIN_60X);
-    Serial.print("@Set Ext gain to 60");
-    Serial.println();
-    break;
-  default:
-    // Code to execute when expression doesn't match any case
-    tcs.setGain(TCS34725_GAIN_1X);
-    Serial.print("@Set Ext gain to 1 (default)");
-    Serial.println();
-    break; 
-   }
- }
 
-//Turn the Ext integration time to the relevant settings
-void set_IntegTimeExt(Adafruit_TCS34725 tcs,int integTime)
- {
-   switch (integTime) {
-  case 24:
-    tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_24MS);
-    Serial.print("@Set Integration time to 24ms");
-    Serial.println();
-    break;
-  case 60:
-    tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_60MS);
-    Serial.print("@Set Integration time to 60ms");
-    Serial.println();
-    break;
-  case 120:
-    tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_120MS);
-    Serial.print("@Set Integration time to 120ms");
-    Serial.println();
-    break;
-  case 240:
-    tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_240MS);
-    Serial.print("@Set Integration time to 240ms");
-    Serial.println();
-    break;
-  case 480:
-    tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_480MS);
-    Serial.print("@Set Integration time to 480ms");
-    Serial.println();
-    break;
-  // Add more case statements as needed
-  default:
-    // Code to execute when expression doesn't match any case
-    tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_24MS);
-    Serial.print("@Set Integration time to 24ms (default)");
-    Serial.println();
-    break;
-    }
- }
+//Set the gain string to be used to set the gain
+void setGainString(int gain, char* str_Gain) {
+  switch (gain) {
+    case 1:
+      strncpy(str_Gain, "TCS34725_GAIN_1X", sizeof(str_GainExt) - 1);
+      break;
+    case 4:
+      strncpy(str_Gain, "TCS34725_GAIN_4X", sizeof(str_GainExt) - 1);
+      break;
+    case 16:
+      strncpy(str_Gain, "TCS34725_GAIN_16X", sizeof(str_GainExt) - 1);
+      break;
+    case 60:
+      strncpy(str_Gain, "TCS34725_GAIN_60X", sizeof(str_GainExt) - 1);
+      break;
+    default:
+      Serial.println("@Invalid gain setting: " + String(gain));
+      strncpy(str_Gain, "TCS34725_GAIN_1X", sizeof(str_GainExt) - 1);
+      break;
+  }
+
+  str_Gain[sizeof(str_GainExt) - 1] = '\0'; // Null-terminate the character array
+}
+
+//Set the integration time string to be used to set the gain
+void setIntTimeString(int intTime, char* str_IntTime) {
+  switch (intTime) {
+    case 24:
+      strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_24MS", sizeof(str_intTimeExt) - 1);
+      break;
+    case 60:
+      strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_60MS", sizeof(str_intTimeExt) - 1);
+      break;
+    case 120:
+      strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_120MS", sizeof(str_intTimeExt) - 1);
+      break;
+    case 240:
+      strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_240MS", sizeof(str_intTimeExt) - 1);
+      break;
+    case 480:
+      strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_480MS", sizeof(str_intTimeExt) - 1);
+      break;
+    default:
+      Serial.println("@Invalid integ time setting: " + String(intTime));
+      strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_24MS", sizeof(str_intTimeExt) - 1);
+      break;
+  }
+
+  str_IntTime[sizeof(str_intTimeExt) - 1] = '\0'; // Null-terminate the character array
+}
+
 
    
    
