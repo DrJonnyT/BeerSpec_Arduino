@@ -15,6 +15,9 @@ int red_light_pin= 11;
 int green_light_pin = 10;
 int blue_light_pin = 9;
 
+//Set the tcsExt LED pin
+int tcsExtLEDPin = 2;
+
 /* Initialise with default values (int time = 2.4ms, gain = 1x) */
 // Adafruit_TCS34725 tcs = Adafruit_TCS34725();
 
@@ -48,6 +51,10 @@ char str_IntTimeSca[31];
 
 
 void setup() {
+
+//Set the tcs LED pin to zero
+pinMode(tcsExtLEDPin, OUTPUT);    // sets the digital pin 13 as output
+digitalWrite(tcsExtLEDPin, LOW);
 
 // Begins serial communication 
 Serial.begin(9600);
