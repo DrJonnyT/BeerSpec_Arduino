@@ -23,7 +23,7 @@ int tcsExtLEDPin = 2;
 
 
 /* Initialise with specific int time and gain values */
-Adafruit_TCS34725 tcsExt = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_24MS, TCS34725_GAIN_1X);
+Adafruit_TCS34725 tcsExt = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_24MS, TCS34725_GAIN_60X);
 
 
 //Serial input
@@ -132,16 +132,17 @@ void serialEvent() {
       int itSca = Serial.parseInt();
 
       settings_LED(red, green, blue);
-      settings_Gains(gExt, gSca);
-      settings_IntTimes(itExt, itSca);
+      LED_On();
+      set_Gains(gExt, gSca);
+      set_IntTimes(itExt, itSca);
 
     }
 
 
     
     //Set the gain and int time and make a measurement
-    if (inputString == "#SETREADEXT") {
-      setReadExt();       
+    if (inputString == "#READEXT") {
+      readExt();       
       }
 
     
@@ -183,26 +184,26 @@ void settings_LED(int red, int green, int blue)
 }
 
 //Set the Gain settings
-void settings_Gains(int ext, int sca)
+void set_Gains(int ext, int sca)
  {
   gainExt = ext;
   gainSca = sca;
   //Get the relevant string for the gain setting
-  setGainString(gainExt,str_GainExt);
-  setGainString(gainSca,str_GainSca);
+  setGainExt(gainExt);
+  //setGainSca(gainSca,str_GainSca);
   char serialOut[50];
   sprintf(serialOut, "%s%d%s%s%s%d%s%s", "@GAINSETTINGS = ", gainExt," ",str_GainExt," ",gainSca," ",str_GainSca);
   Serial.println(serialOut);
 }
 
 //Set the Int Time settings
-void settings_IntTimes(int ext, int sca)
+void set_IntTimes(int ext, int sca)
  {
   intTimeExt = ext;
   intTimeSca = sca;
   //Get the relevant string for the int time settings
-  setIntTimeString(intTimeExt,str_IntTimeExt);
-  setIntTimeString(intTimeSca,str_IntTimeSca);
+  setIntTimeExt(intTimeExt);
+  //setIntTimeSca(intTimeSca);
   char serialOut[50];
   sprintf(serialOut, "%s%d%s%s%s%d%s%s", "@INTTIMESETTINGS = ", intTimeExt," ",str_IntTimeExt," ",intTimeSca," ",str_IntTimeSca);
   Serial.println(serialOut);
@@ -210,66 +211,69 @@ void settings_IntTimes(int ext, int sca)
 
 
 //Set the gain string to be used to set the gain
-void setGainString(int gain, char* str_Gain) {
+void setGainExt(int gain) {
   switch (gain) {
     case 1:
-      strncpy(str_Gain, "TCS34725_GAIN_1X", sizeof(str_GainExt) - 1);
+      strncpy(str_GainExt, "TCS34725_GAIN_1X", sizeof(str_GainExt) - 1);
       tcsExt.setGain(TCS34725_GAIN_1X);
       break;
     case 4:
-      strncpy(str_Gain, "TCS34725_GAIN_4X", sizeof(str_GainExt) - 1);
+      strncpy(str_GainExt, "TCS34725_GAIN_4X", sizeof(str_GainExt) - 1);
       tcsExt.setGain(TCS34725_GAIN_4X);
       break;
     case 16:
-      strncpy(str_Gain, "TCS34725_GAIN_16X", sizeof(str_GainExt) - 1);
+      strncpy(str_GainExt, "TCS34725_GAIN_16X", sizeof(str_GainExt) - 1);
       tcsExt.setGain(TCS34725_GAIN_16X);
       break;
     case 60:
-      strncpy(str_Gain, "TCS34725_GAIN_60X", sizeof(str_GainExt) - 1);
+      strncpy(str_GainExt, "TCS34725_GAIN_60X", sizeof(str_GainExt) - 1);
       tcsExt.setGain(TCS34725_GAIN_60X);
-      tcsExt.setGain(60);
       break;
     default:
       Serial.println("@Invalid gain setting: " + String(gain));
-      strncpy(str_Gain, "TCS34725_GAIN_1X", sizeof(str_GainExt) - 1);
+      strncpy(str_GainExt, "TCS34725_GAIN_1X", sizeof(str_GainExt) - 1);
       tcsExt.setGain(TCS34725_GAIN_1X);
       break;
   }
 
-  str_Gain[sizeof(str_GainExt) - 1] = '\0'; // Null-terminate the character array
+  str_GainExt[sizeof(str_GainExt) - 1] = '\0'; // Null-terminate the character array
 }
 
 //Set the integration time string to be used to set the gain
-void setIntTimeString(int intTime, char* str_IntTime) {
+void setIntTimeExt(int intTime) {
   switch (intTime) {
     case 24:
-      strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_24MS", sizeof(str_IntTimeExt) - 1);
+      strncpy(str_IntTimeExt, "TCS34725_INTEGRATIONTIME_24MS", sizeof(str_IntTimeExt) - 1);
       tcsExt.setIntegrationTime(TCS34725_INTEGRATIONTIME_24MS);
       break;
+    case 50:
+      strncpy(str_IntTimeExt, "TCS34725_INTEGRATIONTIME_50MS", sizeof(str_IntTimeExt) - 1);
+      tcsExt.setIntegrationTime(TCS34725_INTEGRATIONTIME_50MS);
+      break;
     case 60:
-      strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_60MS", sizeof(str_IntTimeExt) - 1);
+      strncpy(str_IntTimeExt, "TCS34725_INTEGRATIONTIME_60MS", sizeof(str_IntTimeExt) - 1);
       tcsExt.setIntegrationTime(TCS34725_INTEGRATIONTIME_60MS);
       break;
     case 120:
-      strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_120MS", sizeof(str_IntTimeExt) - 1);
+      strncpy(str_IntTimeExt, "TCS34725_INTEGRATIONTIME_120MS", sizeof(str_IntTimeExt) - 1);
       tcsExt.setIntegrationTime(TCS34725_INTEGRATIONTIME_120MS);
       break;
     case 240:
-      strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_240MS", sizeof(str_IntTimeExt) - 1);
+      strncpy(str_IntTimeExt, "TCS34725_INTEGRATIONTIME_240MS", sizeof(str_IntTimeExt) - 1);
       tcsExt.setIntegrationTime(TCS34725_INTEGRATIONTIME_240MS);
       break;
     case 480:
-      strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_480MS", sizeof(str_IntTimeExt) - 1);
+      strncpy(str_IntTimeExt, "TCS34725_INTEGRATIONTIME_480MS", sizeof(str_IntTimeExt) - 1);
       tcsExt.setIntegrationTime(TCS34725_INTEGRATIONTIME_480MS);
       break;
     default:
       Serial.println("@Invalid integ time setting: " + String(intTime));
-      strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_24MS", sizeof(str_IntTimeExt) - 1);
+      strncpy(str_IntTimeExt, "TCS34725_INTEGRATIONTIME_24MS", sizeof(str_IntTimeExt) - 1);
       tcsExt.setIntegrationTime(TCS34725_INTEGRATIONTIME_24MS);
       break;
   }
 
-  str_IntTime[sizeof(str_IntTimeExt) - 1] = '\0'; // Null-terminate the character array
+  str_IntTimeExt[sizeof(str_IntTimeExt) - 1] = '\0'; // Null-terminate the character array
 }
 
 
@@ -286,17 +290,11 @@ void read_ext(){
   Serial.println(serialOut);
 }
 
-//Set tcsExt with gain and int time, and read RGB
-void setReadExt(){
-  //Set detector - now handled by setGainString and setIntTimeString
-  //tcsExt.setGain(*str_GainExt);
-  //tcsExt.setIntegrationTime(*str_IntTimeExt);
-  
+//Set turn LED on and read Ext
+void readExt(){  
   //Set LED
   LED_On();
-  
-  delay(4000);
-  
+  delay(500);
   read_ext();
   
 }
