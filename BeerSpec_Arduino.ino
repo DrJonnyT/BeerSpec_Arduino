@@ -1,15 +1,14 @@
 #include <Wire.h>
 #include "Adafruit_TCS34725.h"
 
-
 /*********
   BeerSpec Arduino
   https://github.com/DrJonnyT/BeerSpec_Arduino
   This code is designed to run on an Arduino MEGA 2560 Board
   Also see https://github.com/DrJonnyT/BeerSpec_GUI for a windows control GUI
 *********/
-//
 
+/********PINS********/
 //LED pins
 int red_light_pin= 11;
 int green_light_pin = 10;
@@ -18,20 +17,18 @@ int blue_light_pin = 9;
 //Set the tcsExt LED pin
 int tcsExtLEDPin = 2;
 
+
+/********SENSOR SETUP********/
 /* Initialise with default values (int time = 2.4ms, gain = 1x) */
 // Adafruit_TCS34725 tcs = Adafruit_TCS34725();
-
-
 /* Initialise with specific int time and gain values */
 Adafruit_TCS34725 tcsExt = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_24MS, TCS34725_GAIN_60X);
-
-
 //Serial input
 String inputString = "";         // a String to hold incoming serial data
 bool stringComplete = false;  // whether the string is complete
 
 
-//Initial settings
+/********INSTRUMENT SETTINGS********/
 //LED colour
 int LEDR = 0;
 int LEDG = 0;
@@ -50,7 +47,17 @@ char str_IntTimeExt[31];
 char str_IntTimeSca[31];
 
 
+/********FUNCTION DECLARATIONS********/
 void LED_On(bool quiet=false);
+void LED_Off();
+void settings_LED(int red, int green, int blue);
+void set_Gains(int ext, int sca);
+void set_IntTimes(int ext, int sca);
+void setGainExt(int gain);
+void setIntTimeExt(int gain);
+void read_Ext();
+void read_Sca();
+
 
 
 void setup() {
@@ -140,8 +147,6 @@ void serialEvent() {
       set_IntTimes(itExt, itSca);
 
     }
-
-
     
     //Read Extinction sensor
     if (inputString == "#READEXT") {
@@ -159,7 +164,6 @@ void serialEvent() {
       read_Sca();
     }
 
-    
 
     // if the incoming character is a newline, set a flag so the main loop can
     // do something about it:
@@ -169,6 +173,8 @@ void serialEvent() {
   }
 }
 
+
+/********FUNCTION DEFINITIONS********/
 
 //Turn the LED on to the relevant settings
 void LED_On(bool quiet)
