@@ -50,6 +50,9 @@ char str_IntTimeExt[31];
 char str_IntTimeSca[31];
 
 
+void LED_On(bool quiet=false);
+
+
 void setup() {
 
 //Set the tcs LED pin to zero
@@ -64,13 +67,13 @@ inputString.reserve(200);
 
 //Cycle LED to signify setup OK
 settings_LED(128,0,0);
-LED_On();
+LED_On(true);
 delay(1000);
 settings_LED(0,128,0);
-LED_On();
+LED_On(true);
 delay(1000);
 settings_LED(0,0,128);
-LED_On();
+LED_On(true);
 delay(1000);
 LED_Off();
 Serial.println("@SETUPCOMPLETE");
@@ -140,10 +143,21 @@ void serialEvent() {
 
 
     
-    //Set the gain and int time and make a measurement
+    //Read Extinction sensor
     if (inputString == "#READEXT") {
-      readExt();       
-      }
+      //Set LED to current settings
+      LED_On(true);
+      delay(500);
+      read_Ext();
+    }
+
+    //Read Scattering sensor
+    if (inputString == "#READSCA") {
+      //Set LED to current settings
+      LED_On(true);
+      delay(500);
+      read_Sca();
+    }
 
     
 
@@ -157,12 +171,14 @@ void serialEvent() {
 
 
 //Turn the LED on to the relevant settings
-void LED_On()
+void LED_On(bool quiet)
  {
   analogWrite(red_light_pin, LEDR);
   analogWrite(green_light_pin, LEDG);
   analogWrite(blue_light_pin, LEDB);
+  if(quiet == false){
   Serial.println("@LEDON");
+  }
 }
 
 //Turn the LED off
@@ -280,7 +296,7 @@ void setIntTimeExt(int intTime) {
 
 
 //Read extinction sensor
-void read_ext(){
+void read_Ext(){
   //Variables to take the read data
   uint16_t r, g, b, c;
   tcsExt.getRawData(&r, &g, &b, &c);
@@ -290,11 +306,15 @@ void read_ext(){
   Serial.println(serialOut);
 }
 
-//Set turn LED on and read Ext
-void readExt(){  
-  //Set LED
-  LED_On();
-  delay(500);
-  read_ext();
-  
+//Read scatering sensor
+//Currently a dummy function
+void read_Sca(){
+  //Variables to take the read data
+  uint16_t r, g, b, c;
+  //tcsExt.getRawData(&r, &g, &b, &c);
+  //Send it straight away
+  char serialOut[50];
+  //sprintf(serialOut, "%s%d%s%d%s%d", "@SCA = ", r," ",g," ",b);
+  sprintf(serialOut, "%s%d%s%d%s%d", "@SCA = ", 0," ",0," ",0);
+  Serial.println(serialOut);
 }
