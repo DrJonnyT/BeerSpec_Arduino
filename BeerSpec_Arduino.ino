@@ -115,6 +115,11 @@ void serialEvent() {
       LED_On();
     }
 
+    //Set the LED to off as a one-off
+    if (inputString == "#LEDOFF") {
+      LED_Off();
+    }
+
     //Set the LED colours, gains and int times
     if (inputString == "#SETALL") {
       // look for the next valid integer in the incoming serial stream:
