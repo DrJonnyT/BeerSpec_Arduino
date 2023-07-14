@@ -1,12 +1,15 @@
 #include <Wire.h>
 #include "Adafruit_TCS34725.h"
-
+//#include "Adafruit_TCS34725softi2c.h"
 
 /*********
   BeerSpec Arduino
   https://github.com/DrJonnyT/BeerSpec_Arduino
   This code is designed to run on an Arduino MEGA 2560 Board
   Also see https://github.com/DrJonnyT/BeerSpec_GUI for a windows control GUI
+  Required libraries:
+  https://github.com/Fire7/SoftwareWire
+  https://github.com/Fire7/Adafruit_TCS34725_SoftI2C
 *********/
 //
 
@@ -15,8 +18,15 @@ int red_light_pin= 11;
 int green_light_pin = 10;
 int blue_light_pin = 9;
 
+// // Pins for for emulating SDA / SCL
+// #define SDApin 20
+// #define SCLpin 21
+
 //Set the tcsExt LED pin
 int tcsExtLEDPin = 2;
+
+/* Initialise with specific int time and gain values and custom SDA / SCL pin */
+//Adafruit_TCS34725softi2c  tcsExt = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_24MS, TCS34725_GAIN_1X, SDApin, SCLpin);
 
 /* Initialise with default values (int time = 2.4ms, gain = 1x) */
 // Adafruit_TCS34725 tcs = Adafruit_TCS34725();
