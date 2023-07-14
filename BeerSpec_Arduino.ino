@@ -286,7 +286,7 @@ void read_ext(){
   tcsExt.getRawData(&r, &g, &b, &c);
   //Send it straight away
   char serialOut[50];
-  sprintf(serialOut, "%s%d%s%d%s%d%s%d", "@EXT = ", r," ",g," ",b," ",c);
+  sprintf(serialOut, "%s%d%s%d%s%d%s%d", "@EXT = ", r," ",g," ",b);
   Serial.println(serialOut);
 }
 
