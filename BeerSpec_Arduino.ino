@@ -312,7 +312,7 @@ void read_Ext(){
   Serial.println(serialOut);
 }
 
-//Read scatering sensor
+//Read scattering sensor
 //Currently a dummy function
 void read_Sca(){
   //Variables to take the read data
