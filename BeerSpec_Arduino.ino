@@ -84,13 +84,15 @@ LED_On(true);
 delay(1000);
 LED_Off();
 Serial.println("@SETUPCOMPLETE");
-
 }
-void loop() {
 
-  // print the string when a newline arrives:
+/*
+  All the loop needs to do is clear the serial input so the same command
+  doesn't get run twice. All the main work is done by serialEvent
+*/
+void loop() {  
   if (stringComplete) {
-    Serial.println(inputString);
+    //Serial.println(inputString);
     // clear the string:
     inputString = "";
     stringComplete = false;
