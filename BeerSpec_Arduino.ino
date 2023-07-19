@@ -116,8 +116,7 @@ void serialEvent() {
       LEDR = Serial.parseInt();
       LEDG = Serial.parseInt();
       LEDB = Serial.parseInt();
-      Serial.print("@LEDRGB = " + String(LEDR) + " " + String(LEDG) + " " + String(LEDB));
-      Serial.println();
+      Serial.println("@LEDRGB = " + String(LEDR) + " " + String(LEDG) + " " + String(LEDB));
     }
 
     //Set the LED to the selected colours as a one-off
