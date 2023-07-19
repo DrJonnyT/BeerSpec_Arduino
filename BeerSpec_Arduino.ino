@@ -164,6 +164,11 @@ void serialEvent() {
       read_Sca();
     }
 
+    //Check serial comms
+    if (inputString == "#CHECKSERIAL") {
+      Serial.println("@SERIALOK");
+    }
+
 
     // if the incoming character is a newline, set a flag so the main loop can
     // do something about it:
