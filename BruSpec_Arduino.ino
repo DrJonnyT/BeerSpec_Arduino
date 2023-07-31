@@ -23,6 +23,8 @@ int tcsExtLEDPin = 2;
 // Adafruit_TCS34725 tcs = Adafruit_TCS34725();
 /* Initialise with specific int time and gain values */
 Adafruit_TCS34725 tcsExt = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_24MS, TCS34725_GAIN_60X);
+int i2CBusExt = 0;
+int i2CBusSca = 1;
 //Serial input
 String inputString = "";         // a String to hold incoming serial data
 bool stringComplete = false;  // whether the string is complete
@@ -57,6 +59,7 @@ void setGainExt(int gain);
 void setIntTimeExt(int gain);
 void read_Ext();
 void read_Sca();
+void selectI2CBus(uint8_t bus);
 
 
 
@@ -71,6 +74,11 @@ Serial.begin(9600);
 
 // reserve 200 bytes for the inputString:
 inputString.reserve(200);
+
+// //Setup the I2C multiplexer
+//Wire.begin();
+selectI2CBus(i2CBusExt);
+
 
 //Cycle LED to signify setup OK
 settings_LED(128,0,0);
@@ -329,4 +337,11 @@ void read_Sca(){
   //sprintf(serialOut, "%s%d%s%d%s%d", "@SCA = ", r," ",g," ",b);
   sprintf(serialOut, "%s%d%s%d%s%d", "@SCA = ", 0," ",0," ",0);
   Serial.println(serialOut);
+}
+
+// Select I2C BUS
+void selectI2CBus(uint8_t bus){
+    Wire.beginTransmission(0x70);
+    Wire.write(1 << (bus)); 
+    Wire.endTransmission();
 }
