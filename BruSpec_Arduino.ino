@@ -2,10 +2,10 @@
 #include "Adafruit_TCS34725.h"
 
 /*********
-  BeerSpec Arduino
-  https://github.com/DrJonnyT/BeerSpec_Arduino
+  BruSpec Arduino
+  https://github.com/DrJonnyT/BruSpec_Arduino
   This code is designed to run on an Arduino MEGA 2560 Board
-  Also see https://github.com/DrJonnyT/BeerSpec_GUI for a windows control GUI
+  Also see https://github.com/DrJonnyT/BruSpec_GUI for a windows control GUI
 *********/
 
 /********PINS********/
