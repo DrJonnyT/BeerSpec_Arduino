@@ -1,2 +1,2 @@
-# BeerSpec_Arduino
-Arduino code for Beer Spectrometer
+# BruSpec_Arduino
+Arduino code for BruSpec spectrophotometer
