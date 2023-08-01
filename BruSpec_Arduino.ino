@@ -24,10 +24,12 @@ int tcsScaLEDPin = 3;
 // Adafruit_TCS34725 tcs = Adafruit_TCS34725();
 /* Initialise with specific int time and gain values */
 Adafruit_TCS34725 tcsExt = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_24MS, TCS34725_GAIN_60X);
-
+//The I2C bus for each detector, used on the PCA9546A board
 int i2CBusExt = 0;
 int i2CBusSca = 1;
-//Serial input
+
+
+/********SERIAL INPUT********/
 String inputString = "";         // a String to hold incoming serial data
 bool stringComplete = false;  // whether the string is complete
 
@@ -254,7 +256,6 @@ void set_IntTimes(int ext, int sca)
   Serial.println(serialOut);
 }
 
-
 // Set the detector gain, and gain string for traceability
 //New version using str_Gain as argument
 void setGain(int gain, char* str_Gain) {
@@ -284,7 +285,6 @@ void setGain(int gain, char* str_Gain) {
 
   str_Gain[sizeof(str_GainExt) - 1] = '\0'; // Null-terminate the character array
 }
-
 
 // Set the integration time, and intTime string for traceability
 void setIntTime(int intTime, char* str_IntTime) {
@@ -322,9 +322,6 @@ void setIntTime(int intTime, char* str_IntTime) {
 
   str_IntTime[sizeof(str_IntTimeExt) - 1] = '\0'; // Null-terminate the character array
 }
-
-
-
 
 //Read extinction sensor
 void read_Ext(){
