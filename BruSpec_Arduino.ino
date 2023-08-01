@@ -16,6 +16,7 @@ int blue_light_pin = 9;
 
 //Set the tcsExt LED pin
 int tcsExtLEDPin = 2;
+int tcsScaLEDPin = 3;
 
 
 /********SENSOR SETUP********/
@@ -23,6 +24,7 @@ int tcsExtLEDPin = 2;
 // Adafruit_TCS34725 tcs = Adafruit_TCS34725();
 /* Initialise with specific int time and gain values */
 Adafruit_TCS34725 tcsExt = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_24MS, TCS34725_GAIN_60X);
+
 int i2CBusExt = 0;
 int i2CBusSca = 1;
 //Serial input
@@ -65,9 +67,11 @@ void selectI2CBus(uint8_t bus);
 
 void setup() {
 
-//Set the tcs LED pin to zero
-pinMode(tcsExtLEDPin, OUTPUT);    // sets the digital pin 13 as output
+//Set the tcs LED pins to zero
+pinMode(tcsExtLEDPin, OUTPUT);
 digitalWrite(tcsExtLEDPin, LOW);
+pinMode(tcsScaLEDPin, OUTPUT);
+digitalWrite(tcsScaLEDPin, LOW);
 
 // Begins serial communication 
 Serial.begin(9600);
@@ -76,7 +80,7 @@ Serial.begin(9600);
 inputString.reserve(200);
 
 // //Setup the I2C multiplexer
-//Wire.begin();
+Wire.begin();
 selectI2CBus(i2CBusExt);
 
 
@@ -317,6 +321,8 @@ void setIntTimeExt(int intTime) {
 
 //Read extinction sensor
 void read_Ext(){
+  //Select Ext serial bus
+  selectI2CBus(i2CBusExt);
   //Variables to take the read data
   uint16_t r, g, b, c;
   tcsExt.getRawData(&r, &g, &b, &c);
@@ -329,13 +335,14 @@ void read_Ext(){
 //Read scattering sensor
 //Currently a dummy function
 void read_Sca(){
+  //Select Sca serial bus
+  selectI2CBus(i2CBusSca);
   //Variables to take the read data
   uint16_t r, g, b, c;
-  //tcsExt.getRawData(&r, &g, &b, &c);
+  tcsExt.getRawData(&r, &g, &b, &c);
   //Send it straight away
   char serialOut[50];
-  //sprintf(serialOut, "%s%d%s%d%s%d", "@SCA = ", r," ",g," ",b);
-  sprintf(serialOut, "%s%d%s%d%s%d", "@SCA = ", 0," ",0," ",0);
+  sprintf(serialOut, "%s%d%s%d%s%d", "@SCA = ", r," ",g," ",b);
   Serial.println(serialOut);
 }
 
