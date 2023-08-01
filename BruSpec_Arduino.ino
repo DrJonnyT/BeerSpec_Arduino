@@ -57,7 +57,8 @@ void LED_Off();
 void settings_LED(int red, int green, int blue);
 void set_Gains(int ext, int sca);
 void set_IntTimes(int ext, int sca);
-void setGainExt(int gain);
+//void setGainExt(int gain);
+void setGain(int gain, char* str_Gain);
 void setIntTimeExt(int gain);
 void read_Ext();
 void read_Sca();
@@ -229,8 +230,10 @@ void set_Gains(int ext, int sca)
   gainExt = ext;
   gainSca = sca;
   //Get the relevant string for the gain setting
-  setGainExt(gainExt);
-  //setGainSca(gainSca,str_GainSca);
+  selectI2CBus(i2CBusExt);
+  setGain(gainExt,str_GainExt);
+  selectI2CBus(i2CBusSca);
+  setGain(gainSca,str_GainSca);
   char serialOut[50];
   sprintf(serialOut, "%s%d%s%s%s%d%s%s", "@GAINSETTINGS = ", gainExt," ",str_GainExt," ",gainSca," ",str_GainSca);
   Serial.println(serialOut);
@@ -250,34 +253,36 @@ void set_IntTimes(int ext, int sca)
 }
 
 
-//Set the gain string to be used to set the gain
-void setGainExt(int gain) {
+// Set the detector gain, and gain string for traceability
+//New version using str_Gain as argument
+void setGain(int gain, char* str_Gain) {
   switch (gain) {
     case 1:
-      strncpy(str_GainExt, "TCS34725_GAIN_1X", sizeof(str_GainExt) - 1);
+      strncpy(str_Gain, "TCS34725_GAIN_1X", sizeof(str_GainExt) - 1);
       tcsExt.setGain(TCS34725_GAIN_1X);
       break;
     case 4:
-      strncpy(str_GainExt, "TCS34725_GAIN_4X", sizeof(str_GainExt) - 1);
+      strncpy(str_Gain, "TCS34725_GAIN_4X", sizeof(str_GainExt) - 1);
       tcsExt.setGain(TCS34725_GAIN_4X);
       break;
     case 16:
-      strncpy(str_GainExt, "TCS34725_GAIN_16X", sizeof(str_GainExt) - 1);
+      strncpy(str_Gain, "TCS34725_GAIN_16X", sizeof(str_GainExt) - 1);
       tcsExt.setGain(TCS34725_GAIN_16X);
       break;
     case 60:
-      strncpy(str_GainExt, "TCS34725_GAIN_60X", sizeof(str_GainExt) - 1);
+      strncpy(str_Gain, "TCS34725_GAIN_60X", sizeof(str_GainExt) - 1);
       tcsExt.setGain(TCS34725_GAIN_60X);
       break;
     default:
       Serial.println("@Invalid gain setting: " + String(gain));
-      strncpy(str_GainExt, "TCS34725_GAIN_1X", sizeof(str_GainExt) - 1);
+      strncpy(str_Gain, "TCS34725_GAIN_1X", sizeof(str_GainExt) - 1);
       tcsExt.setGain(TCS34725_GAIN_1X);
       break;
   }
 
-  str_GainExt[sizeof(str_GainExt) - 1] = '\0'; // Null-terminate the character array
+  str_Gain[sizeof(str_GainExt) - 1] = '\0'; // Null-terminate the character array
 }
+
 
 //Set the integration time string to be used to set the gain
 void setIntTimeExt(int intTime) {
