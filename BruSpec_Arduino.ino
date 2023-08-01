@@ -310,6 +310,10 @@ void setIntTime(int intTime, char* str_IntTime) {
       strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_480MS", sizeof(str_IntTimeExt) - 1);
       tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_480MS);
       break;
+    case 600:
+      strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_600MS", sizeof(str_IntTimeExt) - 1);
+      tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_600MS);
+      break;
     default:
       Serial.println("@Invalid integ time setting: " + String(intTime));
       strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_24MS", sizeof(str_IntTimeExt) - 1);
