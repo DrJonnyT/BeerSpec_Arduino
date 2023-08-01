@@ -14,8 +14,8 @@ int red_light_pin= 11;
 int green_light_pin = 10;
 int blue_light_pin = 9;
 
-//Set the tcsExt LED pin
-int tcsExtLEDPin = 2;
+//Set the tcs LED pin
+int tcsLEDPin = 2;
 int tcsScaLEDPin = 3;
 
 
@@ -23,7 +23,7 @@ int tcsScaLEDPin = 3;
 /* Initialise with default values (int time = 2.4ms, gain = 1x) */
 // Adafruit_TCS34725 tcs = Adafruit_TCS34725();
 /* Initialise with specific int time and gain values */
-Adafruit_TCS34725 tcsExt = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_24MS, TCS34725_GAIN_60X);
+Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_24MS, TCS34725_GAIN_60X);
 //The I2C bus for each detector, used on the PCA9546A board
 int i2CBusExt = 0;
 int i2CBusSca = 1;
@@ -70,8 +70,8 @@ void selectI2CBus(uint8_t bus);
 void setup() {
 
 //Set the tcs LED pins to zero
-pinMode(tcsExtLEDPin, OUTPUT);
-digitalWrite(tcsExtLEDPin, LOW);
+pinMode(tcsLEDPin, OUTPUT);
+digitalWrite(tcsLEDPin, LOW);
 pinMode(tcsScaLEDPin, OUTPUT);
 digitalWrite(tcsScaLEDPin, LOW);
 
@@ -262,24 +262,24 @@ void setGain(int gain, char* str_Gain) {
   switch (gain) {
     case 1:
       strncpy(str_Gain, "TCS34725_GAIN_1X", sizeof(str_GainExt) - 1);
-      tcsExt.setGain(TCS34725_GAIN_1X);
+      tcs.setGain(TCS34725_GAIN_1X);
       break;
     case 4:
       strncpy(str_Gain, "TCS34725_GAIN_4X", sizeof(str_GainExt) - 1);
-      tcsExt.setGain(TCS34725_GAIN_4X);
+      tcs.setGain(TCS34725_GAIN_4X);
       break;
     case 16:
       strncpy(str_Gain, "TCS34725_GAIN_16X", sizeof(str_GainExt) - 1);
-      tcsExt.setGain(TCS34725_GAIN_16X);
+      tcs.setGain(TCS34725_GAIN_16X);
       break;
     case 60:
       strncpy(str_Gain, "TCS34725_GAIN_60X", sizeof(str_GainExt) - 1);
-      tcsExt.setGain(TCS34725_GAIN_60X);
+      tcs.setGain(TCS34725_GAIN_60X);
       break;
     default:
       Serial.println("@Invalid gain setting: " + String(gain));
       strncpy(str_Gain, "TCS34725_GAIN_1X", sizeof(str_GainExt) - 1);
-      tcsExt.setGain(TCS34725_GAIN_1X);
+      tcs.setGain(TCS34725_GAIN_1X);
       break;
   }
 
@@ -291,32 +291,32 @@ void setIntTime(int intTime, char* str_IntTime) {
   switch (intTime) {
     case 24:
       strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_24MS", sizeof(str_IntTimeExt) - 1);
-      tcsExt.setIntegrationTime(TCS34725_INTEGRATIONTIME_24MS);
+      tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_24MS);
       break;
     case 50:
       strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_50MS", sizeof(str_IntTimeExt) - 1);
-      tcsExt.setIntegrationTime(TCS34725_INTEGRATIONTIME_50MS);
+      tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_50MS);
       break;
     case 60:
       strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_60MS", sizeof(str_IntTimeExt) - 1);
-      tcsExt.setIntegrationTime(TCS34725_INTEGRATIONTIME_60MS);
+      tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_60MS);
       break;
     case 120:
       strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_120MS", sizeof(str_IntTimeExt) - 1);
-      tcsExt.setIntegrationTime(TCS34725_INTEGRATIONTIME_120MS);
+      tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_120MS);
       break;
     case 240:
       strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_240MS", sizeof(str_IntTimeExt) - 1);
-      tcsExt.setIntegrationTime(TCS34725_INTEGRATIONTIME_240MS);
+      tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_240MS);
       break;
     case 480:
       strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_480MS", sizeof(str_IntTimeExt) - 1);
-      tcsExt.setIntegrationTime(TCS34725_INTEGRATIONTIME_480MS);
+      tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_480MS);
       break;
     default:
       Serial.println("@Invalid integ time setting: " + String(intTime));
       strncpy(str_IntTime, "TCS34725_INTEGRATIONTIME_24MS", sizeof(str_IntTimeExt) - 1);
-      tcsExt.setIntegrationTime(TCS34725_INTEGRATIONTIME_24MS);
+      tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_24MS);
       break;
   }
 
@@ -329,7 +329,7 @@ void read_Ext(){
   selectI2CBus(i2CBusExt);
   //Variables to take the read data
   uint16_t r, g, b, c;
-  tcsExt.getRawData(&r, &g, &b, &c);
+  tcs.getRawData(&r, &g, &b, &c);
   //Send it straight away
   char serialOut[50];
   sprintf(serialOut, "%s%d%s%d%s%d", "@EXT = ", r," ",g," ",b);
@@ -343,7 +343,7 @@ void read_Sca(){
   selectI2CBus(i2CBusSca);
   //Variables to take the read data
   uint16_t r, g, b, c;
-  tcsExt.getRawData(&r, &g, &b, &c);
+  tcs.getRawData(&r, &g, &b, &c);
   //Send it straight away
   char serialOut[50];
   sprintf(serialOut, "%s%d%s%d%s%d", "@SCA = ", r," ",g," ",b);
