@@ -23,7 +23,7 @@ int tcsScaLEDPin = 3;
 /* Initialise with default values (int time = 2.4ms, gain = 1x) */
 // Adafruit_TCS34725 tcs = Adafruit_TCS34725();
 /* Initialise with specific int time and gain values */
-Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_24MS, TCS34725_GAIN_60X);
+Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_120MS, TCS34725_GAIN_16X);
 //The I2C bus for each detector, used on the PCA9546A board
 int i2CBusExt = 0;
 int i2CBusSca = 1;
@@ -40,14 +40,14 @@ int LEDR = 0;
 int LEDG = 0;
 int LEDB = 0;
 //Detector gains
-int gainExt = 1;
-int gainSca = 1;
+int gainExt = 16;
+int gainSca = 16;
 //Text representation of the detector gains, to be used in tcs.setGain function
 char str_GainExt[18];
 char str_GainSca[18];
 //Detector integration times (ms)
-int intTimeExt = 24;
-int intTimeSca = 24;
+int intTimeExt = 120;
+int intTimeSca = 120;
 //Text representation of the integration times, to be used in tcs.setIntegrationTime function
 char str_IntTimeExt[31];
 char str_IntTimeSca[31];
@@ -66,7 +66,6 @@ void read_Sca();
 void selectI2CBus(uint8_t bus);
 
 
-
 void setup() {
 
 //Set the tcs LED pins to zero
@@ -81,10 +80,8 @@ Serial.begin(9600);
 // reserve 200 bytes for the inputString:
 inputString.reserve(200);
 
-// //Setup the I2C multiplexer
+//Setup the I2C multiplexer
 Wire.begin();
-selectI2CBus(i2CBusExt);
-
 
 //Cycle LED to signify setup OK
 settings_LED(128,0,0);
