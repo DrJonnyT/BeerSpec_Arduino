@@ -78,13 +78,15 @@ digitalWrite(tcsScaLEDPin, LOW);
 
 // Begins serial communication 
 Serial.begin(9600);
+Serial.println("@SETUPSTARTING");
 
 // reserve 200 bytes for the inputString:
 inputString.reserve(200);
 
 //Setup the I2C multiplexer
 Wire.begin();
-selectI2CBus(i2CBusExt);
+read_Ext();
+read_Sca();
 
 //Cycle LED to signify setup OK
 settings_LED(128,0,0);
