@@ -1,5 +1,6 @@
 #include <Wire.h>
 #include "Adafruit_TCS34725.h"
+#include <avr/wdt.h> // Include the Watchdog Timer library
 
 /*********
   BruSpec Arduino
@@ -64,6 +65,7 @@ void setIntTime(int gain, char* str_IntTime);
 void read_Ext();
 void read_Sca();
 void selectI2CBus(uint8_t bus);
+void softReset();
 
 
 void setup() {
@@ -174,6 +176,11 @@ void serialEvent() {
     //Check serial comms
     if (inputString == "#CHECKSERIAL") {
       Serial.println("@SERIALOK");
+    }
+
+    //Soft reset the Arduino board
+    if (inputString == "#RESET") {
+      softReset();
     }
 
 
@@ -351,4 +358,9 @@ void selectI2CBus(uint8_t bus){
     Wire.beginTransmission(0x70);
     Wire.write(1 << (bus)); 
     Wire.endTransmission();
+}
+
+void softReset() {
+  wdt_enable(WDTO_15MS); // Enable the WDT with a short timeout (15ms)
+  while (1); // Wait for the WDT to trigger a reset
 }
