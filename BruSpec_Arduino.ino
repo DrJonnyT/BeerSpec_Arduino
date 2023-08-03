@@ -82,6 +82,7 @@ inputString.reserve(200);
 
 //Setup the I2C multiplexer
 Wire.begin();
+selectI2CBus(i2CBusExt);
 
 //Cycle LED to signify setup OK
 settings_LED(128,0,0);
