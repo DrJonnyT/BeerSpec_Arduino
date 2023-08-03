@@ -162,17 +162,11 @@ void serialEvent() {
     
     //Read Extinction sensor
     if (inputString == "#READEXT") {
-      //Set LED to current settings
-      LED_On(true);
-      delay(500);
       read_Ext();
     }
 
     //Read Scattering sensor
     if (inputString == "#READSCA") {
-      //Set LED to current settings
-      LED_On(true);
-      delay(500);
       read_Sca();
     }
 
